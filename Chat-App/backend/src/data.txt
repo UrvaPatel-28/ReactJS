@@ -1,0 +1,8 @@
+Method:GET Path:/user Code:200 Time:107ms Date:Wed Jan 24 2024
+Method:POST Path:/auth/login Code:201 Time:9ms Date:Wed Jan 24 2024
+Method:GET Path:/user Code:200 Time:252ms Date:Wed Jan 24 2024
+Method:POST Path:/auth/login Code:201 Time:9ms Date:Wed Jan 24 2024
+Method:GET Path:/user/manager Code:200 Time:1ms Date:Wed Jan 24 2024
+Method:GET Path:/user/manager Code:200 Time:2ms Date:Wed Jan 24 2024
+Method:GET Path:/user/manager Code:200 Time:3ms Date:Wed Jan 24 2024
+Method:POST Path:/auth/login Code:201 Time:11ms Date:Wed Jan 24 2024
