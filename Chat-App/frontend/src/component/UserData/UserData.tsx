@@ -1,10 +1,14 @@
 
+import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 
 
 export function UserData({ userData }) {
-
+    const [hostName, setHostName] = useState('localhost')
+    useEffect(() => {
+        setHostName(window.location.hostname)
+    }, [])
 
     return (
         <>
@@ -27,6 +31,9 @@ export function UserData({ userData }) {
 
                                         <td  >{user.userName}</td>
                                         <td>{user.mobileNumber}</td>
+                                        <td>
+                                            <img className="h-20 w-20 object-contain rounded-full" src={`http://${hostName}:3005/${user.userProfile}`} />
+                                        </td>
 
                                     </tr>
                                 )

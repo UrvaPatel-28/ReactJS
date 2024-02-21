@@ -24,18 +24,7 @@ export class UserController {
   }
 
 
-  @Post('upload')
-  @UseInterceptors(FileInterceptor('file', {
-    storage: diskStorage({
-      destination: './uploads',
-      filename: (req, file, cb) => {
-        cb(null, `${file.originalname}`)
-      }
-    })
-  }))
-  uploadFile(@UploadedFile() file: Express.Multer.File) {
-    console.log("hii", file);
-  }
+
 
 
 

@@ -15,6 +15,7 @@ export class UserService {
 
   async create(createUserDto: CreateUserDto): Promise<User> {
     try {
+      console.log("hii", createUserDto);
 
       const existingUser: User = await this.userRepository.findOneBy({ userName: createUserDto.userName });
       if (existingUser) {

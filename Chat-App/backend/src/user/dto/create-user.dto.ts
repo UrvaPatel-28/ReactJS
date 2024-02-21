@@ -17,8 +17,7 @@ export class CreateUserDto {
     mobileNumber: number;
 
 
-
-
+    userProfile: string;
 
     //
 

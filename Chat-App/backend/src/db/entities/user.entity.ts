@@ -18,6 +18,9 @@ export class User {
     @Column({ type: "varchar" })
     mobileNumber: number;
 
+    @Column({ nullable: true })
+    userProfile: string;
+
 
 }
 
