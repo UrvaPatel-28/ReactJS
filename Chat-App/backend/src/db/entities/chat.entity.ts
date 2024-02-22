@@ -1,5 +1,5 @@
 import { Optional } from "@nestjs/common";
-import { Column, Entity, IsNull, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, IsNull, PrimaryGeneratedColumn } from "typeorm";
 
 
 @Entity()
@@ -8,14 +8,22 @@ export class Chat {
     @PrimaryGeneratedColumn('uuid')
     id: string
 
-    // @Column()
-    // date: Date
+    @CreateDateColumn()
+    date: Date
 
     @Column()
-    userId: string
+    senderName: string
 
     @Column()
-    username: string
+    receiverName: string
+
+    @Column()
+    senderId: string
+
+
+
+    @Column()
+    receiverId: string
 
     @Column()
     message: string

@@ -22,12 +22,35 @@ export class ChatService {
 
     }
 
-    async getChats() {
-        try {
-            return await this.chatRepository.find();
-        } catch (error) {
-            throw new BadRequestException()
-        }
-    }
+    // async getChats() {
+    //     try {
+    //         return this.chatRepository.createQueryBuilder('chat')
+    //         .getMany();
+    //     } catch (error) {
+    //         throw new BadRequestException()
+    //     }
+    // }
 
+
+    // async getChatsById(senderId, receiverId) {
+    //     try {
+    //         return this.chatRepository.createQueryBuilder('chat')
+    //             .getMany();
+
+    //     } catch (error) {
+    //         throw new BadRequestException()
+    //     }
+    // }
+
+
+    async getChats(senderId: string, receiverId: string) {
+        return this.chatRepository.find({
+            where: [
+                { senderId, receiverId },
+                { senderId: receiverId, receiverId: senderId },
+            ],
+            order: { date: 'ASC' },
+
+        });
+    }
 }

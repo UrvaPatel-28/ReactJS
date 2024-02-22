@@ -1,7 +1,15 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { useEffect, useState } from "react";
+
+// const [hostname, setHostname] = useState('localhost')
+
+// useEffect(() => {
+//     setHostname()
+// }, [])
+const hostname = window.location.hostname
 
 export const fetchUserData = createAsyncThunk('fetchUserData', async () => {
-    const response = await fetch("http://localhost:3005/user/");
+    const response = await fetch(`http://${hostname}:3005/user/`);
     const result = await response.json();
     if (result.isError) throw new Error();
     // console.log(result.data);

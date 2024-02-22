@@ -13,7 +13,7 @@ const Navbar = () => {
         <>
             <nav className="bg-gray-800 p-4">
                 <div className="container mx-auto flex justify-between items-center">
-                    <div className="text-white text-xl font-semibold">Your Logo</div>
+                    <div className="text-white text-xl font-semibold">Chat App</div>
 
 
                     {isLoIn ?

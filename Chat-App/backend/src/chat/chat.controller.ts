@@ -13,10 +13,10 @@ export class ChatController {
     //     return this.userService.create(createUserDto);
     // }
 
-    @Get()
-    getChats() {
-        return this.chatService.getChats();
-    }
+    // @Get()
+    // getChats() {
+    //     return this.chatService.getChats();
+    // }
 
 
 

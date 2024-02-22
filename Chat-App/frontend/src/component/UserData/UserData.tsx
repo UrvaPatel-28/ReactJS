@@ -5,10 +5,22 @@ import { Link, useNavigate } from 'react-router-dom';
 
 
 export function UserData({ userData }) {
-    const [hostName, setHostName] = useState('localhost')
-    useEffect(() => {
-        setHostName(window.location.hostname)
-    }, [])
+    // const [hostName, setHostName] = useState('localhost')
+    const hostName = window.location.hostname;
+
+    const navigate = useNavigate();
+
+    const handleClick = (receiverId) => {
+        console.log("hi", receiverId);
+
+        // setUserName(username);
+        navigate(`/chat/${receiverId}`);
+    }
+
+
+    // useEffect(() => {
+    //     setHostName(window.location.hostname)
+    // }, [])
 
     return (
         <>
@@ -27,7 +39,7 @@ export function UserData({ userData }) {
                             userData.map((user) => {
                                 // console.log(user);
                                 return (
-                                    <tr className='border-4 cursor-pointer' key={user.id} >
+                                    <tr className='border-4 cursor-pointer' onClick={() => handleClick(user.id)} key={user.id} >
 
                                         <td  >{user.userName}</td>
                                         <td>{user.mobileNumber}</td>

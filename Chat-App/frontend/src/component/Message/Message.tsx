@@ -3,18 +3,18 @@ import './Message.css'
 import { useSelector } from 'react-redux';
 import { jwtDecode } from 'jwt-decode';
 
-const Message = ({ message, user, classs }) => {
+const Message = ({ message, senderName, receiverName, classs }) => {
 
     const token = useSelector((state: any) => state.auth.token);
     const decodedData: any = jwtDecode(token);
     const username = decodedData.username;
 
-    if (user !== username) {
+    if (senderName == username) {
         return (
             <>
                 <div className={`messageBox ${classs}`}>
 
-                    {`${user}: ${message}`}
+                    {`You: ${message}`}
                 </div>
             </>
         )
@@ -24,7 +24,7 @@ const Message = ({ message, user, classs }) => {
             <>
                 <div className={`messageBox ${classs}`}>
 
-                    {`You: ${message}`}
+                    {`${senderName}: ${message}`}
                 </div>
             </>
         )
