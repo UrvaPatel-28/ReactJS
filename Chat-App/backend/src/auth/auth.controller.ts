@@ -25,7 +25,6 @@ export class AuthController {
     }))
     uploadFile(@UploadedFile() file: Express.Multer.File,
         @Body() createUserDto: CreateUserDto) {
-        console.log("hii", file);
         createUserDto.userProfile = file?.filename ?? "userprofile.png";
         return this.authService.register(createUserDto)
     }
@@ -33,7 +32,6 @@ export class AuthController {
     @Post('login')
     @UseGuards(AuthGuard('local'))
     login(@Req() req: any) {
-        console.log(req.user);
 
         const payload = {
             id: req.user.id,

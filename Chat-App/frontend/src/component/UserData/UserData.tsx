@@ -3,14 +3,24 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 
+interface User {
+    id: string;
+    userName: string;
+    mobileNumber: string;
+    userProfile: string;
+}
 
-export function UserData({ userData }) {
+interface UserDataProps {
+    userData: User[];
+}
+
+export function UserData({ userData }: UserDataProps) {
     // const [hostName, setHostName] = useState('localhost')
     const hostName = window.location.hostname;
 
     const navigate = useNavigate();
 
-    const handleClick = (receiverId) => {
+    const handleClick = (receiverId: string) => {
         console.log("hi", receiverId);
 
         // setUserName(username);

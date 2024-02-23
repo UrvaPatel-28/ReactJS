@@ -15,11 +15,7 @@ export class Chat {
     senderName: string
 
     @Column()
-    receiverName: string
-
-    @Column()
     senderId: string
-
 
 
     @Column()

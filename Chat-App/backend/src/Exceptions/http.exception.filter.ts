@@ -1,14 +1,11 @@
 import { ArgumentsHost, Catch, ExceptionFilter, HttpException, Inject } from "@nestjs/common"
 import { Response, Request } from "express";
-import * as fs from "fs";
 
-import * as path from 'path'
-import { LogsService } from "src/logs/logs.service";
 
 
 @Catch(HttpException)
 export class CustomHttpExceptionFilter implements ExceptionFilter {
-    constructor(@Inject(LogsService) private readonly logService: LogsService) { }
+
     catch(exception: HttpException, host: ArgumentsHost): Record<string, any> {
         const ctx = host.switchToHttp();
         const response: Response = ctx.getResponse<Response>();
@@ -27,7 +24,7 @@ export class CustomHttpExceptionFilter implements ExceptionFilter {
             error: error,
             timestamp: new Date().toISOString()
         }
-        console.log(errorData);
+        console.log("hii", errorData, request.url);
 
 
         const data = {
@@ -35,24 +32,18 @@ export class CustomHttpExceptionFilter implements ExceptionFilter {
             ...baseData, //whole basedata object
             message: formattedErrors, //overwite message 
         }
-        const result = {
-            date: new Date(),
-            statusCode: errorData.statusCode,
-            // userId : request.user.payload.,
-            userId: (request.user as any)?.payload.id,
-            path: request.url,
-            data: data
-        };
-
-        // this.logService.addData(result)
-
-        // this.writeHttpLog(data)
         return response.status(status).json(data)
+        // const result = {
+        //     date: new Date(),
+        //     statusCode: errorData.statusCode,
+        //     // userId : request.user.payload.,
+        //     userId: (request.user as any)?.payload.id,
+        //     path: request.url,
+        //     data: data
+        // };
     }
 
-    //for getting first message
     private getFirstValidationError(errors: any): any | null {
-        // Assuming `errors` is an array of validation errors
         return Array.isArray(errors) && errors.length > 0 ? errors[0] : errors;
     }
 

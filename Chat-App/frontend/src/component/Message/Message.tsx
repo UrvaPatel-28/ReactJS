@@ -3,13 +3,23 @@ import './Message.css'
 import { useSelector } from 'react-redux';
 import { jwtDecode } from 'jwt-decode';
 
-const Message = ({ message, senderName, receiverName, classs }) => {
+interface MessageProps {
+    message: string;
+    senderName: string;
+    classs: string;
+}
+interface DecodedData {
+    id: string;
+    username: string;
+}
+
+const Message: React.FC<MessageProps> = ({ message, senderName, classs }) => {
 
     const token = useSelector((state: any) => state.auth.token);
-    const decodedData: any = jwtDecode(token);
-    const username = decodedData.username;
+    const decodedData: DecodedData = jwtDecode(token);
+    const userName: string = decodedData.username;
 
-    if (senderName == username) {
+    if (senderName == userName) {
         return (
             <>
                 <div className={`messageBox ${classs}`}>
@@ -23,7 +33,6 @@ const Message = ({ message, senderName, receiverName, classs }) => {
         return (
             <>
                 <div className={`messageBox ${classs}`}>
-
                     {`${senderName}: ${message}`}
                 </div>
             </>

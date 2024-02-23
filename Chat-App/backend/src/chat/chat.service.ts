@@ -22,6 +22,16 @@ export class ChatService {
 
     }
 
+    async getChats(senderId: string, receiverId: string) {
+        return this.chatRepository.find({
+            where: [
+                { senderId, receiverId },
+                { senderId: receiverId, receiverId: senderId },
+            ],
+            order: { date: 'ASC' },
+
+        });
+    }
     // async getChats() {
     //     try {
     //         return this.chatRepository.createQueryBuilder('chat')
@@ -43,14 +53,5 @@ export class ChatService {
     // }
 
 
-    async getChats(senderId: string, receiverId: string) {
-        return this.chatRepository.find({
-            where: [
-                { senderId, receiverId },
-                { senderId: receiverId, receiverId: senderId },
-            ],
-            order: { date: 'ASC' },
 
-        });
-    }
 }

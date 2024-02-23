@@ -6,18 +6,13 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 
 const Register = () => {
-    // const [userName, setUserName] = useState('');
-    // const [mobileNumber, setMobileNumber] = useState('');
-    // const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
     const [hostname, setHostname] = useState('localhost')
 
-    // const [userProfile, setUserProfile] = useState("https://www.google.com/url?sa=i&url=https%3A%2F%2Fdepositphotos.com%2Fvectors%2Fprofile-placeholder.html&psig=AOvVaw1hV1nc1Vuh_HmgJQZdUmei&ust=1708512816273000&source=images&cd=vfe&opi=89978449&ved=0CBMQjRxqFwoTCOjegq7guYQDFQAAAAAdAAAAABAf")
+
     const formRef = useRef<HTMLFormElement>(null)
     console.log(formRef.current);
-
-    // const [data, setData] = useState<ResponseData>()
 
     useEffect(() => {
         setHostname(window.location.hostname)
@@ -40,7 +35,7 @@ const Register = () => {
         try {
             const response = await fetch(`http://${hostname}:3005/auth/register`, {
                 method: 'POST',
-                body: new FormData(formRef.current!)
+                body: formData
 
             });
             console.log("u", response);
@@ -73,7 +68,7 @@ const Register = () => {
                             type="text"
                             placeholder="Username"
                             className="w-full p-2 mb-4 border rounded"
-                            // value={userName} onChange={(e) => setUserName(e.target.value)}
+
                             required
                         />
                         <input
@@ -81,7 +76,7 @@ const Register = () => {
                             className="w-full p-2 mb-4 border rounded"
                             type="number"
                             placeholder='Mobile number'
-                        // value={mobileNumber} onChange={(e) => setMobileNumber(e.target.value)}
+
 
                         />
                         <input
@@ -89,18 +84,14 @@ const Register = () => {
                             type="password"
                             placeholder="Password"
                             className="w-full p-2 mb-4 border rounded"
-                            // value={password} onChange={(e) => setPassword(e.target.value)}
+
                             required />
 
                         <input className='mb-2 p-3' type="file"
-                            // value={userProfile}
-                            // onChange={(e) => {
-                            //     setUserProfile(e.target.files[0])
 
-                            // }}
                             name='userProfile' />
 
-                        <button type='submit' className="w-full bg-green-500 text-white p-2 rounded hover:bg-green-600" onClick={addData} disabled={loading}>Register</button>
+                        <button type='submit' className="w-full bg-green-500 text-white p-2 rounded hover:bg-green-600" disabled={loading}>Register</button>
 
                         {loading && <h2>Loading......</h2>}
                         <p>Already have account? <Link to="/login">Login</Link></p>

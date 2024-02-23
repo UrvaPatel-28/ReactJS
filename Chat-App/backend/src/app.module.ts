@@ -8,24 +8,16 @@ import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 
 import { CustomHttpExceptionFilter } from './Exceptions/http.exception.filter';
 
-import { Log } from './db/entities/log.entity';
-
-
-import { LogsModule } from './logs/logs.module';
 import { loggingInterceptor } from './Interceptors/logging.interceptor';
-import { LogsService } from './logs/logs.service';
 import { UserFetcherMiddleware } from './middlewares/user-fetcher.middleware';
 import { JwtStrategy } from './auth/jwt.strategy';
 import { JwtService } from '@nestjs/jwt';
 import { ChatGateway } from './gateway/chat.gateway';
 import { Chat } from './db/entities/chat.entity';
 import { ChatModule } from './chat/chat.module';
-import { ChatService } from './chat/chat.service';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 
-
-// import { LoggerModule } from './logger/logger.module';
 
 
 
@@ -47,7 +39,7 @@ import { join } from 'path';
         password: process.env.DB_PASSWORD,
         database: process.env.DB_NAME,
         synchronize: true,
-        entities: [User, Log, Chat],
+        entities: [User, Chat],
 
       }),
       ServeStaticModule.forRoot({
@@ -56,7 +48,6 @@ import { join } from 'path';
       UserModule,
       AuthModule,
 
-      LogsModule,
       ChatModule
 
 

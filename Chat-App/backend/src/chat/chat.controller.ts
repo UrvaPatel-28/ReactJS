@@ -8,15 +8,6 @@ import { Express } from 'express'
 export class ChatController {
     constructor(@Inject(ChatService) private readonly chatService: ChatService) { }
 
-    // @Post()
-    // create(@Body() createUserDto): Promise<User> {
-    //     return this.userService.create(createUserDto);
-    // }
-
-    // @Get()
-    // getChats() {
-    //     return this.chatService.getChats();
-    // }
 
 
 

@@ -1,18 +1,17 @@
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { login } from '../../Fetures/authSlice';
 
 
 const Login = () => {
-    const [userName, setUsername] = useState('');
-    const [password, setPassword] = useState('');
+
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false)
 
     const [hostname, setHostname] = useState('localhost')
-
+    const formRef = useRef<HTMLFormElement>(null)
     useEffect(() => {
         setHostname(window.location.hostname)
     }, [])
@@ -20,7 +19,10 @@ const Login = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch();
 
-    const addData = async () => {
+    const addData = async (event: SubmitEvent) => {
+        event.preventDefault();
+        const formData = new FormData(formRef.current!)
+        const { userName, password } = Object.fromEntries(formData.entries())
         if (!userName || !password) {
             return setError("All feilds are required")
         }
@@ -64,27 +66,29 @@ const Login = () => {
 
 
             <div className="flex justify-center items-center h-screen" >
-                <div className="w-96 p-8 bg-gray-100 rounded shadow-md">
-                    <h2 className="text-2xl font-semibold mb-4">Login</h2>
-                    <input
+                <form ref={formRef} action="" onSubmit={addData}>
+                    <div className="w-96 p-8 bg-gray-100 rounded shadow-md">
+                        <h2 className="text-2xl font-semibold mb-4">Login</h2>
+                        <input
+                            name='userName'
+                            type="text"
+                            placeholder="Username"
+                            className="w-full p-2 mb-4 border rounded"
+                        />
+                        <input
+                            name='password'
+                            type="password"
+                            placeholder="Password"
+                            className="w-full p-2 mb-4 border rounded"
+                        />
+                        <button type='submit' className="w-full bg-green-500 text-white p-2 rounded hover:bg-green-600" >Login</button>
+                        <p>Create a new account? <Link to="/register">Register</Link></p>
 
-                        type="text" value={userName} onChange={(e) => setUsername(e.target.value)}
-                        placeholder="Username"
-                        className="w-full p-2 mb-4 border rounded"
-                    />
-                    <input
+                        {loading && <h2>Loading......</h2>}
 
-                        type="password" value={password} onChange={(e) => setPassword(e.target.value)}
-                        placeholder="Password"
-                        className="w-full p-2 mb-4 border rounded"
-                    />
-                    <button type='submit' className="w-full bg-green-500 text-white p-2 rounded hover:bg-green-600" onClick={addData}>Login</button>
-                    <p>Create a new account? <Link to="/register">Register</Link></p>
-
-                    {loading && <h2>Loading......</h2>}
-
-                    <p className="text-red-700 mt-4" >{error}</p>
-                </div>
+                        <p className="text-red-700 mt-4" >{error}</p>
+                    </div>
+                </form>
             </div >
 
         </>

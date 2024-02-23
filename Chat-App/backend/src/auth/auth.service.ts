@@ -19,7 +19,6 @@ export class AuthService {
     }
 
     register(createUserDto: CreateUserDto): Promise<User> {
-        console.log("urva", createUserDto);
         return this.userService.create(createUserDto);
     }
 }

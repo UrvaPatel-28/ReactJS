@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import "./Chat.css";
-import socketIo from 'socket.io-client';
+// import "./Chat.css";
+import socketIo, { type Socket } from 'socket.io-client';
 import { useSelector } from 'react-redux';
 import { jwtDecode } from 'jwt-decode';
 import Message from '../Message/Message';
@@ -8,59 +8,53 @@ import ReactScrollToBottom from 'react-scroll-to-bottom';
 import { useParams } from 'react-router-dom';
 
 
+interface DecodedData {
+    id: string;
+    username: string;
 
-const Chat = () => {
+}
 
+interface Message {
+    message: string;
+    senderId: string;
+    receiverId: string;
+    senderName: string;
+}
 
-    const [senderId, setsenderId] = useState();
-    const [senderName, setsenderName] = useState();
-    const [messages, setMessages] = useState([]);
-    // const receiverId = "4e457f3a-6709-4fb8-847e-da045d1d14d5";
-    const { receiverId } = useParams();
-    const receiverName = "Radhe89"
-    // const senderName = decodedData.usernname;
-    // const senderId = decodedData.id
+const Chat: React.FC = () => {
 
     const token = useSelector((state: any) => state.auth.token);
-    const decodedData: any = jwtDecode(token);
+    const decodedData: DecodedData = jwtDecode(token);
+    const senderName = decodedData.username;
+    const senderId = decodedData.id
+    const { receiverId = "" } = useParams<string>();
+    // const [senderId, setSenderId] = useState<string>("");
+    // const [senderName, setSenderName] = useState<string>("");
+    const [messages, setMessages] = useState<Message[]>([]);
+    // const receiverName = "Radhe89";
 
-    const [socket, setSocket] = useState(null)
+    const [socket, setSocket] = useState<Socket | null>(null);
+
 
     // console.log("hii", receiverId);
 
 
-    useMemo(() => {
-        setsenderName(decodedData.username);
-        setsenderId(decodedData.id)
-    }, [])
+    // useMemo(() => {
+    //     setSenderName(decodedData.username);
+    //     setSenderId(decodedData.id)
+    // }, [])
 
     const sendMessage = () => {
+        const messageInput = document.getElementById('chatInput') as HTMLInputElement | null;
+        const messageText = messageInput?.value.trim() || '';
 
-        const message = (document.getElementById('chatInput') as HTMLInputElement).value.trim();
-
-        if (message !== '') {
-            // Log the sender and receiver IDs
-            console.log('Sender ID:', senderId);
-            console.log('Receiver ID:', receiverId);
-
-            setMessages(prevMessages =>
-
-                [...prevMessages, { message, senderName, receiverName }]
-
-            );
-            // Emit the message to the server
-            socket.emit("message", { message, senderName, senderId, receiverId, receiverName });
-
-            // // Save the message to the local state immediately
-            console.log(messages);
-
-
-
-
-            // Clear the input field
-            (document.getElementById('chatInput') as HTMLInputElement).value = "";
+        if (messageText !== '') {
+            const newMessage: Message = { message: messageText, senderName, senderId, receiverId };
+            setMessages((prevMessages) => [...prevMessages, newMessage]);
+            socket?.emit("message", newMessage);
+            messageInput!.value = "";
         }
-    }
+    };
 
     useEffect(() => {
 
@@ -82,11 +76,6 @@ const Chat = () => {
         })
 
         socket.emit('getMessages', { senderId, receiverId })
-        // socket.on('allMessages', (data) => {
-        //     console.log(data);
-
-        //     setMessages(data)
-        // })
 
 
         socket.on('leave', (data) => {
@@ -101,16 +90,6 @@ const Chat = () => {
     }, [])
 
 
-
-    // useEffect(() => {
-
-    //     socket.on('sendMessage', (data) => {
-    //         setMessages([...messages, data]);
-    //     });
-    //     return () => {
-    //         socket.off();
-    //     }
-    // }, [messages])
 
     useEffect(() => {
 
@@ -143,24 +122,28 @@ const Chat = () => {
 
 
     return (
-        <div className="chatPage">
-            <div className="chatContainer">
-                <div className="header">
-                    <h2>C CHAT</h2>
-
+        <div className="chatPage bg-gray-100 h-screen flex items-center justify-center">
+            <div className="chatContainer bg-white shadow-md rounded-md p-6 w-full max-w-lg">
+                <div className="header mb-4">
+                    <h2 className="text-2xl font-bold">C CHAT</h2>
                 </div>
-                <ReactScrollToBottom className="chatBox">
-                    {
-                        messages.map((msg, index) => <Message key={index} message={msg.message} senderName={msg.senderName} receiverName={msg.receiverName} classs={msg.senderName === senderName ? 'right' : 'left'} />)
-                    }
+                <ReactScrollToBottom className="chatBox overflow-y-auto h-64">
+                    {messages.map((msg, index) => (
+                        <Message key={index} message={msg.message} senderName={msg.senderName} classs={msg.senderId === senderId ? 'right' : 'left'} />
+                    ))}
                 </ReactScrollToBottom>
-                <div className="inputBox">
-                    <input type="text" onKeyPress={(event) => event.key === 'Enter' ? sendMessage() : null} id='chatInput' />
-                    <button className='sendBtn' onClick={sendMessage}>Send</button>
+                <div className="inputBox mt-4">
+                    <input
+                        type="text"
+                        onKeyPress={(event) => (event.key === 'Enter' ? sendMessage() : null)}
+                        id="chatInput"
+                        className="border p-2 w-3/4"
+                    />
+                    <button className="sendBtn ml-2 bg-blue-500 text-white px-4 py-2 rounded" onClick={sendMessage}>
+                        Send
+                    </button>
                 </div>
-
             </div>
-
         </div>
     )
 }

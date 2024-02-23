@@ -30,34 +30,15 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
         console.log("atitbjb", data);
 
         this.users[data.userId] = client.id;
-        console.log(this.users)
         console.log(`${data.user} has joined`);
-        console.log(this.users);
         client.broadcast.emit('userJoined', { user: 'Admin', id: client.id, message: `${this.users[client.id]} has joined` });
         client.emit('welcome', { user: 'Admin', message: `Welcome to the chat ${this.users[client.id]}` });
     }
 
     @SubscribeMessage('message')
     handleMessage(client: Socket, data: any) {
-        console.log('data', data);
-        console.log('data', data.receiverId);
-
         const { receiverId, senderId } = data;
-        console.log("jjbh", data);
-
-
         const wsRecvId = this.users[receiverId];
-        // const senderRoom = this.users[senderId]
-
-        // console.log(receiverId, receiverRoom);
-        // console.log(senderId, senderRoom);
-
-
-        // if (receiverRoom ) {
-        //     // Emit the message directly to the receiver's room using their WebSocket room ID
-        //     client.to(receiverRoom).emit('sendMessage', data);
-        // }
-        // this.ChatService.create(data);
 
         // this.server.to(data.receiverId).to(data.senderId).emit('sendMessage', data);
         if (wsRecvId != null) {
@@ -70,14 +51,9 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
     @SubscribeMessage('getMessages')
     async getMessages(client: Socket, data) {
-        console.log("ddd", data);
-
         const { senderId, receiverId } = data;
-        // console.log("urva", receiverId  );
 
         const chats = await this.ChatService.getChats(senderId, receiverId);
-
-
         client.emit('allMessages', chats);
     }
 }

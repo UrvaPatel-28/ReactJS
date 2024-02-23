@@ -13,11 +13,8 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
     }
 
     async validate(userName: string, password: string): Promise<User> {
-        console.log(userName, password, "username and assword");
-
 
         const user = await this.userService.findOne(userName);
-        console.log("user", user);
 
         if (user && (await bcrypt.compare(password, user.password))) {
             return user
