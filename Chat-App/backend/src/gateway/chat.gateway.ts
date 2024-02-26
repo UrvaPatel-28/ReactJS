@@ -27,8 +27,6 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
     @SubscribeMessage('joined')
     handleJoin(client: Socket, data) {
-        console.log("atitbjb", data);
-
         this.users[data.userId] = client.id;
         console.log(`${data.user} has joined`);
         client.broadcast.emit('userJoined', { user: 'Admin', id: client.id, message: `${this.users[client.id]} has joined` });

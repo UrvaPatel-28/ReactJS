@@ -31,9 +31,9 @@ function App() {
         <Route path='/count' element={<Count />} />
         <Route path='/aboutus' element={<Aboutus />} />
         <Route path='/register' element={<Register />} />
-        <Route path='/chat/:receiverId' element={isLogedIn ? <Chat /> : <Navigate to="/login" />} />
-
         <Route path='/chat' element={isLogedIn ? <Chat /> : <Navigate to="/login" />} />
+
+        {/* <Route path='/chat' element={isLogedIn ? <Chat /> : <Navigate to="/login" />} /> */}
         <Route path='/login' element={isLogedIn ? <Navigate to="/" /> : <Login />} />
         {/* <Route path='*' element={<Home />} /> */}
       </Routes>

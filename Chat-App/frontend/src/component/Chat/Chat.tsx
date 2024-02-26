@@ -21,20 +21,20 @@ interface Message {
     senderName: string;
 }
 
-const Chat: React.FC = () => {
+const Chat = ({ receiverId, receiverName, receiverProfile }) => {
 
     const token = useSelector((state: any) => state.auth.token);
     const decodedData: DecodedData = jwtDecode(token);
     const senderName = decodedData.username;
     const senderId = decodedData.id
-    const { receiverId = "" } = useParams<string>();
+    // const { receiverId = "" } = useParams<string>();
     // const [senderId, setSenderId] = useState<string>("");
     // const [senderName, setSenderName] = useState<string>("");
     const [messages, setMessages] = useState<Message[]>([]);
     // const receiverName = "Radhe89";
 
     const [socket, setSocket] = useState<Socket | null>(null);
-
+    const hostName = window.location.hostname
 
     // console.log("hii", receiverId);
 
@@ -58,7 +58,7 @@ const Chat: React.FC = () => {
 
     useEffect(() => {
 
-        const socket = socketIo(`http://${window.location.hostname}:3005`, { transports: ['websocket'] })
+        const socket = socketIo(`http://${hostName}:3005`, { transports: ['websocket'] })
 
         socket.on('connect', () => {
             // socket.emit('connected', { user: senderName })
@@ -87,7 +87,7 @@ const Chat: React.FC = () => {
         return () => {
             socket.disconnect();
         }
-    }, [])
+    }, [receiverId])
 
 
 
@@ -122,24 +122,28 @@ const Chat: React.FC = () => {
 
 
     return (
-        <div className="chatPage bg-gray-100 h-screen flex items-center justify-center">
-            <div className="chatContainer bg-white shadow-md rounded-md p-6 w-full max-w-lg">
-                <div className="header mb-4">
-                    <h2 className="text-2xl font-bold">C CHAT</h2>
+        <div className="chatPage bg-gray-100 h-full flex items-center justify-center">
+            <div className="chatContainer bg-white shadow-md rounded-md m-5 p-3 w-full  max-w-3xl h-80px relative">
+                <div className="header mb-2 pb-2 border-b-2 flex items-center">
+                    <img className="h-14 w-14 object-contain rounded-full" src={`http://${hostName}:3005/${receiverProfile}`} />
+                    <h2 className='text-2xl text-center ml-5'>{receiverName}</h2>
                 </div>
-                <ReactScrollToBottom className="chatBox overflow-y-auto h-64">
+                {/* <div > */}
+
+                <ReactScrollToBottom className="chatBox overflow-y-auto h-96" >
                     {messages.map((msg, index) => (
                         <Message key={index} message={msg.message} senderName={msg.senderName} classs={msg.senderId === senderId ? 'right' : 'left'} />
                     ))}
                 </ReactScrollToBottom>
-                <div className="inputBox mt-4">
+                {/* </div> */}
+                <div className="inputBox  flex justify-between">
                     <input
                         type="text"
                         onKeyPress={(event) => (event.key === 'Enter' ? sendMessage() : null)}
                         id="chatInput"
-                        className="border p-2 w-3/4"
+                        className="border p-2 w-10/12"
                     />
-                    <button className="sendBtn ml-2 bg-blue-500 text-white px-4 py-2 rounded" onClick={sendMessage}>
+                    <button className="sendBtn mr-3  bg-blue-500 text-white px-4 py-2 rounded" onClick={sendMessage}>
                         Send
                     </button>
                 </div>

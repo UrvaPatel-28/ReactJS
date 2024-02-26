@@ -4,7 +4,7 @@ import { fetchUserData } from '../../Fetures/userDataSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 
-import { UserData } from '../UserList/UserData';
+import { UserData } from './UserData';
 import { jwtDecode } from 'jwt-decode';
 
 interface DecodedData {
@@ -12,7 +12,7 @@ interface DecodedData {
     username: string;
 }
 
-const Home = () => {
+const UserList = () => {
 
     const [seachquery, setSearchquery] = useState('');
     const dispatch = useDispatch();
@@ -31,10 +31,10 @@ const Home = () => {
 
     return (
         <>
-            <h1 className='text-2xl font-bold text-center'>Hello {decodedData.username}</h1>
-            <input className='border-2 border-blue-950 rounded-md ml-3 py-1 px-2 text-lg text-black' placeholder='Search Username' type="search" name="" id="" value={seachquery} onChange={(e) => setSearchquery(e.target.value)} />
+            <h1 className=' overflow-scroll text-2xl font-bold'>Hello {decodedData.username}</h1>
+            <input className='border-red-200' placeholder='search' type="search" name="" id="" value={seachquery} onChange={(e) => setSearchquery(e.target.value)} />
             {result.isLoading ? <h1>Loading...</h1> : <UserData userData={filterData} />}
         </>
     )
 }
-export default Home
+export default UserList
